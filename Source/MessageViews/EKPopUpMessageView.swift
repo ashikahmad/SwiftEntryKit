@@ -70,16 +70,30 @@ public class EKPopUpMessageView: UIView {
     
     private func setupActionButton() {
         addSubview(actionButton)
-        let height: CGFloat = 45
+        let height: CGFloat = message.button.height //45
         actionButton.set(.height, of: height)
         actionButton.layout(.top, to: .bottom, of: descriptionLabel, offset: 30)
         actionButton.layoutToSuperview(.bottom, offset: -30)
-        actionButton.layoutToSuperview(.centerX)
+        
+        switch message.button.width {
+        case .centeredIntrinsic:
+            actionButton.layoutToSuperview(.centerX)
+        case .edgeToEdge(let offset):
+            actionButton.layoutToSuperview(.leading, offset: offset)
+            actionButton.layoutToSuperview(.trailing, offset: -offset)
+        }
+        
         
         let buttonAttributes = message.button
         actionButton.buttonContent = buttonAttributes
         actionButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
-        actionButton.layer.cornerRadius = height * 0.5
+        switch message.button.corners {
+        case .capsule:
+            actionButton.layer.cornerRadius = height * 0.5
+        case .radius(let r):
+            actionButton.layer.cornerRadius = r
+        }
+        
         actionButton.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
         
         let tapColor = buttonAttributes.label.style.color.withAlphaComponent(0.8)

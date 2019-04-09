@@ -13,6 +13,16 @@ public struct EKProperty {
     /** Button content descriptor */
     public struct ButtonContent {
         
+        public enum WidthType {
+            case centeredIntrinsic
+            case edgeToEdge(offset: CGFloat)
+        }
+        
+        public enum CornerType {
+            case capsule
+            case radius(CGFloat)
+        }
+        
         public typealias Action = () -> ()
         
         /** Button title label content descriptor */
@@ -24,6 +34,15 @@ public struct EKProperty {
 
         /** Content edge inset */
         public var contentEdgeInset: CGFloat
+        
+        /** Button height. Defaults to 45 */
+        public var height: CGFloat = 45
+        
+        /** Button width. Defaults to .centeredIntrinsic */
+        public var width: WidthType = .centeredIntrinsic
+        
+        /** Corner roundness. Defaults to .capsule */
+        public var corners: CornerType = .capsule
         
         /** Action */
         public var action: Action?
